@@ -11,7 +11,7 @@ const openBrowser = (url: string) => {
 
 function Nav() {
   return (
-    <div id="nav" className={`bg-light`}>
+    <div id="nav" className={`bg-light select-none`}>
       {/* <div className={`grid grid-cols-3 gap-2`}> */}
       <div className={`flex`}>
         <div>

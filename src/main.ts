@@ -1,6 +1,8 @@
-import { app, BrowserWindow, ipcMain, IpcMainEvent, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, IpcMainEvent, shell, dialog } from 'electron';
 import path from 'path';
 import OpenDefaultBrowserArgs from './interfaces/types/OpenDefaultBrowserArgs';
+import ErrorAlertArgs from './interfaces/types/ErrorAlertArgs';
+import ConfirmDialogArgs from './interfaces/types/ConfirmDialogArgs';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -12,8 +14,11 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 612,
     height: 604,
+    resizable: false,
+    fullscreen: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      disableHtmlFullscreenWindowResize: true,
     },
   });
   mainWindow.setMinimumSize(612, 604);
@@ -27,8 +32,38 @@ const createWindow = () => {
   }
 
   ipcMain.on("openDefaultBrowser", async (event: IpcMainEvent, args: OpenDefaultBrowserArgs) => {
-    shell.openExternal(args.url)
+    shell.openExternal(args.url);
   });
+
+  ipcMain.on("showErrorAlert", async (event: IpcMainEvent, args: ErrorAlertArgs) => {
+    dialog.showErrorBox(args.title, args.content);
+  });
+
+  ipcMain.handle("openConfirmDialog", async (event: IpcMainEvent, args: ConfirmDialogArgs) => {
+    return dialog.showMessageBox(mainWindow, {
+      message: args.title,
+      type: 'question',
+      buttons: ['Tidak', 'Ya']
+    }).then(resp => {
+      console.log('resp', resp)
+      return Promise.resolve(resp.response === 1)
+    }).catch(e => {
+      return Promise.reject(e)
+    });
+  });
+
+  // ipcMain.handle("exportResultsDialog", async (event: IpcMainEvent, args: ConfirmDialogArgs) => {
+  //   return dialog.showMessageBox(mainWindow, {
+  //     message: args.title,
+  //     type: 'question',
+  //     buttons: ['Tidak', 'Ya']
+  //   }).then(resp => {
+  //     console.log('resp', resp)
+  //     return Promise.resolve(resp.response === 1)
+  //   }).catch(e => {
+  //     return Promise.reject(e)
+  //   });
+  // });
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();

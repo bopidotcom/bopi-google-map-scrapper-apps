@@ -2,7 +2,7 @@
   "name": "bopi-google-map-scrapper-apps",
   "productName": "bopi-google-map-scrapper-apps",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Aplikasi scrapping data dari google map business",
   "main": ".vite/build/main.js",
   "scripts": {
     "tailwind-watch": "npx tailwindcss -i ./src/renderer/index.css -o ./assets/app.css --watch",
@@ -33,18 +33,24 @@
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.0.0",
     "typescript": "~4.5.4",
-    "vite": "^5.0.12"
-  },
-  "keywords": [],
-  "author": {
-    "name": "Muhamad Alfisyah Reza Daulay",
-    "email": "daulayreza@gmail.com"
-  },
-  "license": "MIT",
-  "dependencies": {
+    "vite": "^5.0.12",
     "@vitejs/plugin-react": "^4.2.1",
     "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "keywords": [],
+  "author": {
+    "name": "BOPI CORPS",
+    "email": "daulayreza@gmail.com"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "chrome-paths": "^1.0.1",
+    "electron-log": "^5.1.1",
+    "puppeteer": "^22.3.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
 }

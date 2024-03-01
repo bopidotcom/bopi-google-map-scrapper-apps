@@ -17,6 +17,15 @@ export default defineConfig((env) => {
       outDir: `.vite/renderer/${name}`,
     },
     plugins: [pluginExposeRenderer(name), react()],
+    // css: {
+    //   postcss: {
+    //     plugins: [
+    //       require('tailwindcss')({
+    //         config: './tailwind.config.js'
+    //       }),
+    //    ],
+    //   },
+    // },
     resolve: {
       preserveSymlinks: true,
     },
