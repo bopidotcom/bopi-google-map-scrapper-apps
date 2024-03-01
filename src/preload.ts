@@ -1,2 +1,8 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+const { contextBridge, ipcRenderer } = require('electron');
+import OpenDefaultBrowserArgs from "./interfaces/types/OpenDefaultBrowserArgs";
+
+contextBridge.exposeInMainWorld("api", {
+    openDefaultBrowser: function (args: OpenDefaultBrowserArgs) {
+      ipcRenderer.send("openDefaultBrowser", args);
+    }
+});

@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-weight: 400;
+}
+/* #root {
+    padding: 25px;
+} */
+#nav {
+    padding: 25px 25px 0px 25px;
+}
+#nav .version-text {
+    margin-top: -3px;
+}
+/* #nav .si-bopi-logo {
+    max-width: 106px;
+}
+#nav .si-bopi-text {
+    max-width: 132px;
+} */
+.btn-helper {
+    font-size: 9px;
+}
+#content {
+    padding: 25px;
+}
