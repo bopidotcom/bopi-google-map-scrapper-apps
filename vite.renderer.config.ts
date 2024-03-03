@@ -14,6 +14,7 @@ export default defineConfig((env) => {
     mode,
     base: './',
     build: {
+      assetsInlineLimit: 0,
       outDir: `.vite/renderer/${name}`,
     },
     plugins: [pluginExposeRenderer(name), react()],

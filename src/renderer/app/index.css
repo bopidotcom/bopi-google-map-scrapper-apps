@@ -26,3 +26,14 @@ body {
 #content {
     padding: 25px;
 }
+
+.table-wrp  {
+  height: 240px;
+  max-height: 240px;
+  overflow-y: auto;
+  display:block;
+}
+.table-wrp thead{
+  position:sticky;
+  top:0
+}

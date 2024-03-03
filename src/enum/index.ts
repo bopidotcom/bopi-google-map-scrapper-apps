@@ -1,4 +1,5 @@
 export enum submitState {
     'idle',
-    'submitting'
+    'submitting',
+    'scrapping'
 }

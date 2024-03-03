@@ -28,4 +28,4 @@
 
 // import './index.css';
 import './app/index.tsx';
-console.log('👋 This message is being logged by "renderer/index.ts", included via Vite');
+// console.log('👋 This message is being logged by "renderer/index.ts", included via Vite');

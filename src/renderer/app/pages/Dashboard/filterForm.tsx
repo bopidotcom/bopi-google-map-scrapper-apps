@@ -89,7 +89,7 @@ function FilterForm({
                 </button>
             </div>
             <div>
-                <button className={`bg-red hover:opacity-90 disabled:opacity-50 px-3 py-1 rounded flex items-center justify-center`} type={`button`} onClick={() => stopTask()} disabled={processState !== submitState.submitting}>
+                <button className={`bg-red hover:opacity-90 disabled:opacity-50 px-3 py-1 rounded flex items-center justify-center`} type={`button`} onClick={() => stopTask()} disabled={processState !== submitState.scrapping}>
                     <img src={StopIcon} width={7}/>&nbsp;Stop
                 </button>
             </div>

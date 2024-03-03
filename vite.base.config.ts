@@ -14,6 +14,7 @@ export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
     root,
     mode,
     build: {
+      assetsInlineLimit: 0,
       // Prevent multiple builds from interfering with each other.
       emptyOutDir: false,
       // 🚧 Multiple builds may conflict.
