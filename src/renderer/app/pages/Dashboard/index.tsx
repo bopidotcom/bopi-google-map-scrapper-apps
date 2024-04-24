@@ -45,7 +45,6 @@ function DashboardPage() {
   }
 
   const clearPlaces = () => {
-    console.log('clearPlaces')
     setPlaces([]);
   }
 

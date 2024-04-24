@@ -135,7 +135,7 @@ export default class GoogleMapScrapper {
           }
           processedListElement += googleMapListElements.length;
   
-          // cek jika telah mencara[ai akhir halaman
+          // cek jika telah mencarapai akhir halaman
           const lastElementWrapper = $('div[role="feed"] > div:last-child');
           if (lastElementWrapper.length && (
             lastElementWrapper.html().toLowerCase().includes("anda telah mencapai akhir daftar") ||

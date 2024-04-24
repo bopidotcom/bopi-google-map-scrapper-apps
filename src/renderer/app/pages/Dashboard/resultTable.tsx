@@ -20,17 +20,17 @@ function ResultTable({
         "Website",
       ],
       ...places.map(place => [
-        place.storeName.replace(/,/g, '\,').replace(/'/g, '\''),
+        '"' + place.storeName.replace(/,/g, '\,').replace(/'/g, '\'') + '"',
         place.category ? place.category.replace(/"/g, '\"') : '',
         place.address ? place.address.replace(/"/g, '\"') : '',
         place.phone,
-        place.googleUrl,
+        '"' + place.googleUrl + '"',
         place.stars,
         place.numberOfReviews,
-        place.bizWebsite,
+        '"' + (place.bizWebsite ? place.bizWebsite : '') + '"'
       ])
     ]
-    .map(e => e.join(",")) 
+    .map(e => e.join(";")) 
     .join("\n");     
     onExport(csvString);
   }
@@ -75,7 +75,9 @@ function ResultTable({
                     { place.stars }({ place.numberOfReviews })
                   </td>
                   <td className={`px-2 py-2 border-t border-light-gray`}>
+                    <span className={`text-ellipsis overflow-hidden block`}>
                     { place.bizWebsite }
+                    </span>
                   </td>
               </tr>
               )
