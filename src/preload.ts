@@ -4,6 +4,7 @@ import ErrorAlertArgs from "./interfaces/types/ErrorAlertArgs";
 import ConfirmDialogArgs from "./interfaces/types/ConfirmDialogArgs";
 import OnSubmitReturnForm from "./interfaces/types/OnSubmitReturnForm";
 import { submitState } from './enum';
+import Place from './interfaces/types/Place';
 
 contextBridge.exposeInMainWorld("api", {
   openDefaultBrowser: function (args: OpenDefaultBrowserArgs): void {
@@ -15,8 +16,11 @@ contextBridge.exposeInMainWorld("api", {
   openConfirmDialog: function (args: ConfirmDialogArgs) {
     return ipcRenderer.invoke("openConfirmDialog", args);
   },
-  showSaveCsvDialog: function (csvString: string) {
-    return ipcRenderer.invoke("showSaveCsvDialog", csvString);
+  showSaveXlsxDialog: function (places: Place[], queryText: string) {
+    return ipcRenderer.invoke("showSaveXlsxDialog", {
+      places,
+      queryText
+    });
   },
   startGoogleMapScrappingTask: function (args: OnSubmitReturnForm) {
     return ipcRenderer.send("startGoogleMapScrappingTask", args);

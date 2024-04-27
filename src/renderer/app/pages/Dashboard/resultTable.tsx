@@ -8,31 +8,31 @@ function ResultTable({
   onExport
 }: ResultTableProps) {
   const doExport = (places: Place[]) => {
-    const csvString = [
-      [
-        "Nama",
-        "Kategori",
-        "Alamat",
-        "No. HP",
-        "URL Google",
-        "Rating",
-        "Jlh Pemberi Rating",
-        "Website",
-      ],
-      ...places.map(place => [
-        '"' + place.storeName.replace(/,/g, '\,').replace(/'/g, '\'') + '"',
-        place.category ? place.category.replace(/"/g, '\"') : '',
-        place.address ? place.address.replace(/"/g, '\"') : '',
-        place.phone,
-        '"' + place.googleUrl + '"',
-        place.stars,
-        place.numberOfReviews,
-        '"' + (place.bizWebsite ? place.bizWebsite : '') + '"'
-      ])
-    ]
-    .map(e => e.join(";")) 
-    .join("\n");     
-    onExport(csvString);
+    // const csvString = [
+    //   [
+    //     "Nama",
+    //     "Kategori",
+    //     "Alamat",
+    //     "No. HP",
+    //     "URL Google",
+    //     "Rating",
+    //     "Jlh Pemberi Rating",
+    //     "Website",
+    //   ],
+    //   ...places.map(place => [
+    //     '"' + place.storeName.replace(/,/g, '\,').replace(/'/g, '\'') + '"',
+    //     place.category ? place.category.replace(/"/g, '\"') : '',
+    //     place.address ? place.address.replace(/"/g, '\"') : '',
+    //     place.phone,
+    //     '"' + place.googleUrl + '"',
+    //     place.stars,
+    //     place.numberOfReviews,
+    //     '"' + (place.bizWebsite ? place.bizWebsite : '') + '"'
+    //   ])
+    // ]
+    // .map(e => e.join(";")) 
+    // .join("\n");     
+    onExport(places);
   }
 
   return (

@@ -128,6 +128,7 @@ export default class GoogleMapScrapper {
                     // console.log(e)
                   }
                 }
+                data.address = data.address ? data.address.replace(/[^\x00-\x7F]/g, "") : ''
                 listing.push(data);
                 electronEvent.sender.send('receiveGoogleMapScrappingResult', data);
               }

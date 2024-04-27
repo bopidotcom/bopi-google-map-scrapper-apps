@@ -9,11 +9,13 @@ import Place from '../../../../interfaces/types/Place';
 
 function DashboardPage() {
   let [processState, setProcessState] = useState<submitState>(submitState.idle);
+  let [queryText, setQueryText] = useState<string>(null);
   let [places, setPlaces] = useState<Place[]>([]);
 
 
   const onSubmit = (form: OnSubmitReturnForm) => {
     setProcessState(submitState.submitting);
+    setQueryText(form.queryValue + (form.queryValueLocation? ' di ' + form.queryValueLocation : ''))
     window.api.startGoogleMapScrappingTask(form);
   }
 
@@ -48,12 +50,12 @@ function DashboardPage() {
     setPlaces([]);
   }
 
-  const doExport = async (csvString: string) => {
+  const doExport = async (places: Place[]) => {
     try {
       window.api.showNotification('Export File', 'Memproses file export...');
-      const response = await window.api.showSaveCsvDialog(csvString);
+      const response = await window.api.showSaveXlsxDialog(places, queryText);
       if (!response.canceled) {
-        window.api.showNotification('Export File', 'File berhasil disimpan dalam bentuk csv');
+        window.api.showNotification('Export File', 'File berhasil disimpan dalam bentuk xlsx');
         // console.log(response.filePath)
       }
     } catch (e) {

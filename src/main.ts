@@ -7,6 +7,14 @@ import ConfirmDialogArgs from './interfaces/types/ConfirmDialogArgs';
 import OnSubmitReturnForm from './interfaces/types/OnSubmitReturnForm';
 import log from 'electron-log/main';
 import GoogleMapScrapper from'./helpers/google-map-scrapper';
+import * as ExcelJS from "exceljs";
+import Place from './interfaces/types/Place';
+
+
+type SaveXlslDialogArgs = {
+  places: Place[],
+  queryText: string
+}
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -47,23 +55,54 @@ const createWindow = () => {
     dialog.showErrorBox(args.title, args.content);
   });
 
-  ipcMain.handle("showSaveCsvDialog", async (event: IpcMainEvent, csvString: string): Promise<object | Error> => {
+  ipcMain.handle("showSaveXlsxDialog", async (event: IpcMainEvent, args: SaveXlslDialogArgs): Promise<object | Error> => {
     try {
       const resp = await dialog.showSaveDialog(mainWindow, {
         title: 'Simpan file hasil export',
-        defaultPath: path.join(app.getPath('downloads'), 'kontak.csv'),
+        defaultPath: path.join(app.getPath('downloads'), args.queryText + '.xlsx'),
         buttonLabel: 'Save', 
         filters: [
-          { name: 'CSV Files', extensions: ['csv'] }
+          { name: 'XLSX Files', extensions: ['xlsx'] }
         ]     
       });
       if (!resp.canceled) {
-        fs.writeFile(
-          resp.filePath.toString(), 
-          csvString, function (err) { 
-            if (err) throw err; 
-            console.log('Saved!'); 
-        });
+        const workbook = new ExcelJS.Workbook();
+        // Force workbook calculation on load
+        // workbook.calcProperties.fullCalcOnLoad = true;
+        const worksheet = workbook.addWorksheet('Database Kontak');
+        worksheet.columns = [
+          { header: 'Nama', key: 'nama', width: 50, font: {'bold': true} },
+          { header: 'Kategori', key: 'kategori', width: 30, font: {'bold': true}  },
+          { header: 'No. HP', key: 'no_hp', width: 100, font: {'bold': true}  },
+          { header: 'Alamat', key: 'alamat', width: 100, font: {'bold': true}  },
+          { header: 'URL Google', key: 'url_google', width: 100, font: {'bold': true}  },
+          { header: 'Rating', key: 'rating', width: 50, font: {'bold': true}  },
+          { header: 'Jlh Pemberi Rating', key: 'pemberi_rating', width: 50, font: {'bold': true}  },
+          { header: 'Website', key: 'website', width: 100, font: {'bold': true}  },
+        ];
+
+        args.places.map(place => [
+          worksheet.addRow({
+            nama: place.storeName,
+            kategori: place.category,
+            alamat: place.address,
+            no_hp: place.phone,
+            url_google: place.googleUrl,
+            rating: place.stars,
+            pemberi_rating: place.numberOfReviews,
+            website: place.bizWebsite ? place.bizWebsite : ''
+          })
+        ]);
+
+        // fs.writeFile(
+        //   resp.filePath.toString(), 
+        //   csvString, function (err) { 
+        //     if (err) throw err; 
+        //     console.log('Saved!'); 
+        // });
+        // console.log('resp', resp)
+        await workbook.xlsx.writeFile(resp.filePath.toString());
+
       }
       return Promise.resolve(resp);
     } catch (e) {
