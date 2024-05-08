@@ -1,16 +1,37 @@
+import { IpcMainEvent } from 'electron';
 // import * as cheerio from "cheerio";
-import * as cheerio from 'cheerio';
+import { load, Element, Cheerio } from 'cheerio';
 const {chrome} = require('chrome-paths');
+import { Browser } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import { submitState } from '../enum';
 
+export interface BusinessPlace {
+  placeId: string;
+  address: string;
+  category: string | null;
+  phone: string | null;
+  googleUrl: string;
+  bizWebsite: string | null;
+  storeName: string | null;
+  stars: string;
+  numberOfReviews: string | null;
+}
+
+export interface StartScrappingProps {
+  query? : string;
+  url?: string;
+}
+
 export default class GoogleMapScrapper {
+  private browser: Browser;
+  private scrollable: boolean;
   constructor() {
     this.browser = null;
     this.scrollable = false;
   }
-  async startScrapping(electronEvent, params) {
+  async startScrapping(electronEvent: IpcMainEvent, params: StartScrappingProps) {
     try {
       const os = require('os');
 
@@ -44,22 +65,23 @@ export default class GoogleMapScrapper {
         } else {
           url = params.url;
         } 
-        url = new URL(url);
-        url.searchParams.append('hl', 'id'); // en = english
-        await page.goto(url);
+        const parseUrl = new URL(url);
+        parseUrl.searchParams.append('hl', 'id'); // en = english
+        console.log(parseUrl.toString())
+        await page.goto(parseUrl.toString());
       } catch (error) {
         electronEvent.sender.send('receiveGoogleMapScrappingTaskState', submitState.idle);
         return Promise.reject(error)
       }
 
       this.scrollable = true;
-      const listing = [];
+      const listing:Array<BusinessPlace> = [];
       let processedListElement = 0;
       const mainProcess = async () => {
         while (this.scrollable) {
           // dapatkan listing yang sudah di load
           const html = await page.content();
-          const $ = cheerio.load(html);
+          const $ = load(html);
           let googleMapListElements = $('div[role="feed"] > div');
           googleMapListElements.splice(0, processedListElement);
   
@@ -69,7 +91,7 @@ export default class GoogleMapScrapper {
               const href = aElement.attr("href");
               if (href && href.includes("/maps/place/")) {
                 // console.log('href', href)
-                let data = this.htmlToObject(
+                let data: BusinessPlace = this.htmlToObject(
                   aElement.parent()
                 );
                 if (!data.address || !data.phone) {
@@ -87,13 +109,13 @@ export default class GoogleMapScrapper {
                     let address = data.address;
 
                     const html = await page.content();
-                    const $ = cheerio.load(html);
+                    const $ = load(html);
 
                     const dataItemAddress = $('[data-item-id="address"]');
                     console.log(dataItemAddress.length)
                     if (dataItemAddress) {
-                      address = dataItemAddress.find('.fontBodyMedium');
-                      if (address) {
+                      const addressElement = dataItemAddress.find('.fontBodyMedium');
+                      if (addressElement) {
                         address = dataItemAddress.text();
                       }
                     }
@@ -128,7 +150,7 @@ export default class GoogleMapScrapper {
                     // console.log(e)
                   }
                 }
-                data.address = data.address ? data.address.replace(/[^\x00-\x7F]/g, "") : ''
+                data.address = data.address ? data.address.replace(/[^\x00-\x7F]/g, "") : '';
                 listing.push(data);
                 electronEvent.sender.send('receiveGoogleMapScrappingResult', data);
               }
@@ -160,7 +182,7 @@ export default class GoogleMapScrapper {
         electronEvent.sender.send('receiveGoogleMapScrappingTaskState', submitState.idle);
         return Promise.resolve(listing);
       }
-      await this.processCompleted(this.browser);
+      await this.processCompleted();
       electronEvent.sender.send('receiveGoogleMapScrappingTaskState', submitState.idle);
       return Promise.resolve(listing);
   
@@ -189,7 +211,7 @@ export default class GoogleMapScrapper {
     }
   }
 
-  htmlToObject (item) {
+  htmlToObject (item: Cheerio<Element>) {
     const url = item.find("a").attr("href");
     const website = item.find('a[data-value="Website"]').attr("href");
     let storeName = item.find("div.fontHeadlineSmall").text();
