@@ -22,7 +22,7 @@ function Nav() {
         </div>
         <div>
           <div className={`name-version`}>
-            <h3 className={`text-dark font-bold mb-0 text-right`}>Google Maps Scrapper</h3>
+            <h3 className={`text-dark font-bold mb-0 text-right`}>Supplier Finder</h3>
             <p className={`text-sm mb-2 mt-0 text-right version-text`}>version 1.0</p>
             <div className={`grid grid-cols-2 gap-1`}>
               <div>

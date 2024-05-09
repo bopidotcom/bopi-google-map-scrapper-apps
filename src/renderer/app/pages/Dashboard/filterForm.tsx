@@ -67,7 +67,7 @@ function FilterForm({
         <div className={`mt-2 flex ${queryType === 'keyword' ? 'gap-2' : ''}`}>
             <div className={queryType === 'keyword' ? `w-8/12` : `w-full`}>
                 <p className={`select-none`}>{queryType === 'keyword' ? 'Kata kunci' : 'URL Google Map'}*</p>
-                <input type="text" required name="query_value" id="query_value" placeholder="Masukkan kata kunci" className={`w-full py-1 px-2 text-dark rounded`}
+                <input type="text" required name="query_value" id="query_value" placeholder={queryType === 'keyword' ? 'Contoh: supplier biji kopi' : 'Contoh: https://www.google.com/maps/search/supplier+biji+kopi/'} className={`w-full py-1 px-2 text-dark rounded`}
                     onChange={event => setQueryValue(event.target.value)}
                 />
             </div>
@@ -75,7 +75,7 @@ function FilterForm({
                 queryType === 'keyword' ? (
                     <div className={`w-4/12`}>
                         <p className={`select-none`}>Lokasi</p>
-                        <input type="text" name="query_value_location" id="query_value_location" placeholder="Masukkan lokasi" className={`w-full py-1 px-2 text-dark rounded`}
+                        <input type="text" name="query_value_location" id="query_value_location" placeholder="Contoh: medan" className={`w-full py-1 px-2 text-dark rounded`}
                         onChange={event => setQueryValueLocation(event.target.value)}
                     />
                     </div>

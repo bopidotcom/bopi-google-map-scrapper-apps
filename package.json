@@ -1,8 +1,8 @@
 {
   "name": "bopi-google-map-scrapper-apps",
-  "productName": "BOPI - Google Map Scrapper",
+  "productName": "BOPI - Supplier Finder",
   "version": "1.0.0",
-  "description": "Aplikasi scrapping data dari google map business",
+  "description": "Aplikasi scrapping data supplier buat kebutuhan F&B",
   "main": ".vite/build/main.js",
   "scripts": {
     "tailwind-watch": "npx tailwindcss -i ./src/renderer/index.css -o ./assets/app.css --watch",
