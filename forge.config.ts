@@ -14,7 +14,8 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [new MakerSquirrel({
-    setupIcon: './assets/icons/icon'
+    iconUrl: 'https://sibopi.com/app-icon/scrapper/icon.ico',
+    setupIcon: './assets/icons/icon.ico'
   }), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
   plugins: [
     new VitePlugin({
