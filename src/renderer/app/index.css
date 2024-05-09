@@ -28,8 +28,8 @@ body {
 }
 
 .table-wrp  {
-  height: 240px;
-  max-height: 240px;
+  height: 220px;
+  max-height: 220px;
   overflow-y: auto;
   display:block;
 }

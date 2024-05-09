@@ -26,6 +26,7 @@ const googleMapScrapperInstance = new GoogleMapScrapper();
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    // titleBarStyle: process.env.NODE_ENV === 'development' ? 'default' : 'hidden',
     width: 612,
     height: 604,
     resizable: false,

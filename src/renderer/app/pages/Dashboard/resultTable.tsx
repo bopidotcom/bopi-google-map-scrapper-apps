@@ -43,9 +43,9 @@ function ResultTable({
               <tr>
                   <th className={`text-left px-2 py-2 w-1.5 bg-primary w-8 text-center`}></th>
                   <th className={`text-left px-2 py-2 border-r border-light-gray bg-primary w-48`}>Nama</th>
-                  <th className={`text-left px-2 py-2 border-r border-light-gray bg-primary w-24`}>Kategori</th>
+                  <th className={`text-left px-2 py-2 border-r border-light-gray bg-primary w-[85px]`}>Kategori</th>
                   <th className={`text-left px-2 py-2 border-r border-light-gray bg-primary w-52`}>Alamat</th>
-                  <th className={`text-left px-2 py-2 border-r border-light-gray bg-primary w-24`}>No. HP</th>
+                  <th className={`text-left px-2 py-2 border-r border-light-gray bg-primary w-[95px]`}>No. HP</th>
                   {/* <th className={`text-left px-2 py-2 bg-primary`}>Website</th> */}
                   <th className={`text-left px-2 py-2 border-r border-light-gray  bg-primary w-16 text-center`}>Rating</th>
                   <th className={`text-left px-2 py-2 bg-primary w-52`}>Alamat Web</th>
