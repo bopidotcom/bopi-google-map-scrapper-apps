@@ -9,7 +9,11 @@ import log from 'electron-log/main';
 import GoogleMapScrapper from'./helpers/google-map-scrapper';
 import * as ExcelJS from "exceljs";
 import Place from './interfaces/types/Place';
+import SerialKeyService from './helpers/serial-key-service';
+import { system, bios } from "systeminformation";
+import { SKEY_PATH } from '../app.config';
 
+process.env.TZ = 'Asia/Jakarta';
 
 type SaveXlslDialogArgs = {
   places: Place[],
@@ -23,7 +27,15 @@ if (require('electron-squirrel-startup')) {
 
 const googleMapScrapperInstance = new GoogleMapScrapper();
 
-const createWindow = () => {
+const createWindow = async () => {
+  const deviceSystem = await system();
+  const biosSystem = await bios();
+  const serialKeyService = new SerialKeyService(
+    app.getPath('appData'),
+    SKEY_PATH,
+    deviceSystem.serial + (biosSystem.serial ? '_' + biosSystem.serial : '')
+    // deviceSystem.serial
+  );
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     // titleBarStyle: process.env.NODE_ENV === 'development' ? 'default' : 'hidden',
@@ -148,6 +160,16 @@ const createWindow = () => {
       // event.sender.send('errorResultGoogleMapScrapperForm', error);
       log.info(error);
     }
+  });
+
+  ipcMain.handle("license.isActivated", async (event: IpcMainEvent): Promise<boolean> => {
+    serialKeyService.setEvent(event);
+    return await serialKeyService.isActivated();
+  });
+
+  ipcMain.on("license.watchSerialKey", (event: IpcMainEvent) => {
+    // serialKeyService.setEvent(event);
+    serialKeyService.watchSerialKey();
   });
 
   // ipcMain.handle("exportResultsDialog", async (event: IpcMainEvent, args: ConfirmDialogArgs) => {

@@ -50,3 +50,20 @@ contextBridge.exposeInMainWorld("api", {
     })
   },
 });
+
+contextBridge.exposeInMainWorld("license", {
+  isActivated: function () {
+    return ipcRenderer.invoke("license.isActivated");
+  },
+  watchSerialKey: function () {
+    ipcRenderer.send("license.watchSerialKey");
+  },
+  registered: function(func: () => void){
+    ipcRenderer.on("serialkey.service.registered", (event: IpcMainEvent, args: boolean) => {
+      func(args)
+    });
+  },
+  removeEvents: function () {
+    ipcRenderer.removeAllListeners("license.service.registered");
+  },
+})
